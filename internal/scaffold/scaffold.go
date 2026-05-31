@@ -80,11 +80,10 @@ func generateMain(projectID, bucketName string) []byte {
 
 	body.AppendNewline()
 
-	resourceBlock := body.AppendNewBlock("resource", []string{"google_storage_bucket", "default"})
-	resourceBody := resourceBlock.Body()
-	resourceBody.SetAttributeValue("name", cty.StringVal(bucketName))
-	resourceBody.SetAttributeValue("location", cty.StringVal("US"))
-	resourceBody.SetAttributeValue("uniform_bucket_level_access", cty.BoolVal(true))
+	moduleBlock := body.AppendNewBlock("module", []string{"my_bucket"})
+	moduleBody := moduleBlock.Body()
+	moduleBody.SetAttributeValue("source", cty.StringVal("git::https://github.com/larkintuckerllc/terraform-modules.git//my-bucket?ref=v0.1.0"))
+	moduleBody.SetAttributeValue("bucket_name", cty.StringVal(bucketName))
 
 	return f.Bytes()
 }
