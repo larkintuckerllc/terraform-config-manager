@@ -33,18 +33,16 @@ This separation is enforced via a generated `.github/CODEOWNERS` file and enable
 ## Use Cases
 
 - **[Scaffold new configurations](docs/scaffolding.md)** — Generate a complete Terraform project from a GCP project ID and project owner: provider setup, module references to a [shared Terraform modules repo](https://github.com/larkintuckerllc/terraform-modules), CODEOWNERS, `.terraform-version`, `.terraform-config-manager-version`, and `.gitignore`.
-- **Modify existing configurations** — Surgically add, update, or remove resources, variables, and outputs in existing `.tf` files while preserving formatting and comments.
-- **Enforce standards** — Validate configurations against organizational conventions (naming, tagging, required provider versions) and optionally auto-fix violations.
-- **Compose modules** — Programmatically wire together module calls with the correct variable bindings, producing ready-to-plan configurations.
-- **Bulk refactoring** — Rename resources, move blocks between files, update provider versions, or migrate patterns across many `.tf` files at once.
+- **Modify existing configurations** (planned) — Surgically add, update, or remove resources in existing `.tf` files while preserving formatting and comments.
+- **Enforce standards** (planned) — Validate configurations against organizational conventions and optionally auto-fix violations.
+- **Compose modules** (planned) — Programmatically wire together module calls with the correct variable bindings.
+- **Bulk refactoring** (planned) — Rename resources, move blocks between files, update provider versions, or migrate patterns across many `.tf` files at once.
 
 ## Technology
 
 - **Language:** Go
 - **Core library:** [`github.com/hashicorp/hcl/v2`](https://pkg.go.dev/github.com/hashicorp/hcl/v2) — the same library Terraform itself uses to parse and generate HCL.
   - `hclwrite` — create and surgically edit HCL files
-  - `hclparse` — parse HCL into an AST
-  - `gohcl` — marshal/unmarshal Go structs to/from HCL
 
 ## Project Structure
 
