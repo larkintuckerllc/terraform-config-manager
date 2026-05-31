@@ -25,7 +25,7 @@ This minimal scope lets us explore the `hclwrite` API without getting lost in in
 
 ## Use Cases
 
-- **[Scaffold new configurations](docs/scaffolding.md)** — Generate a complete Terraform project from a GCP project ID: provider setup, resource definitions, `.terraform-version`, `.terraform-config-manager-version`, and `.gitignore`.
+- **[Scaffold new configurations](docs/scaffolding.md)** — Generate a complete Terraform project from a GCP project ID: provider setup, module references to a [shared Terraform modules repo](https://github.com/larkintuckerllc/terraform-modules), `.terraform-version`, `.terraform-config-manager-version`, and `.gitignore`.
 - **Modify existing configurations** — Surgically add, update, or remove resources, variables, and outputs in existing `.tf` files while preserving formatting and comments.
 - **Enforce standards** — Validate configurations against organizational conventions (naming, tagging, required provider versions) and optionally auto-fix violations.
 - **Compose modules** — Programmatically wire together module calls with the correct variable bindings, producing ready-to-plan configurations.

@@ -16,6 +16,7 @@ Design decisions:
 
 - **Output directory per project.** The scaffolder creates a directory named after the GCP project ID (e.g., `my-project-id/`) inside the working directory. All generated files are placed there. This gives each project its own isolated Terraform root, with its own state, and makes it natural to manage multiple projects side by side.
 - **Local state only.** No remote backend configuration. This keeps the initial setup simple.
+- **Module-based resources.** Resources are defined in reusable Terraform modules hosted in a separate [Git repository](https://github.com/larkintuckerllc/terraform-modules). The generated `main.tf` references these modules pinned to a specific Git tag, keeping resource definitions decoupled from the scaffolder itself.
 
 ## Prerequisites
 
@@ -85,7 +86,7 @@ This enables detecting stale configurations by comparing the file's version agai
 
 ### `main.tf`
 
-The Terraform configuration: provider setup and resource definitions. The contents of this file will evolve as the manager adds support for new resources and configuration patterns. See the generated file for current details.
+The Terraform configuration: provider setup and module references. Resources are not defined inline — instead, `main.tf` references modules from the [terraform-modules](https://github.com/larkintuckerllc/terraform-modules) repository, pinned to a specific Git tag. The contents of this file will evolve as the manager adds support for new modules. See the generated file for current details.
 
 ## Validating the Output
 
