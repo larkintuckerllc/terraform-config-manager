@@ -110,7 +110,6 @@ func generateProject(bucketName string) []byte {
 	return f.Bytes()
 }
 
-
 func generateCodeowners(projectOwner string) []byte {
 	return []byte(fmt.Sprintf("*          %s\nproject.tf %s\n", platformTeam, projectOwner))
 }
