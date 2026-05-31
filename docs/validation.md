@@ -47,7 +47,3 @@ terraform-config-manager validate [-dir=<path>]
 - `-dir` — path to the project's Terraform configuration directory (defaults to current directory)
 
 In a CI review build, this is typically just `terraform-config-manager validate` run from the project repo root.
-
-## Implementation Status
-
-Not yet implemented. This document describes the intended behavior for the validation feature.
