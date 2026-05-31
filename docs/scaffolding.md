@@ -10,7 +10,7 @@ Setting up a new Terraform project involves creating several boilerplate files t
 
 ## Scope
 
-The scaffolder takes a single input — a **GCP project ID** — and generates a minimal, working Terraform configuration for managing resources in that project.
+The scaffolder takes two inputs — a **GCP project ID** and a **project owner** (GitHub team or user) — and generates a minimal, working Terraform configuration for managing resources in that project. Each generated project is intended to be its own Git repository.
 
 Design decisions:
 
@@ -28,10 +28,11 @@ Design decisions:
 ## Usage
 
 ```sh
-terraform-config-manager scaffold -project=<gcp-project-id> [-output-dir=<path>]
+terraform-config-manager scaffold -project=<gcp-project-id> -owner=<github-team-or-user> [-output-dir=<path>]
 ```
 
 - `-project` — GCP project ID (required)
+- `-owner` — GitHub team or user who owns `project.tf` (required, e.g., `@acme-org/my-team`)
 - `-output-dir` — directory to create the project folder in (defaults to current directory)
 
 ## Approach
@@ -51,6 +52,8 @@ Given project ID `my-project-id`, the scaffolder creates `my-project-id/` contai
 
 ```
 my-project-id/
+├── .github/
+│   └── CODEOWNERS
 ├── .gitignore
 ├── .terraform-config-manager-version
 ├── .terraform-version
@@ -87,6 +90,15 @@ The version of `terraform-config-manager` that generated this configuration. Sam
 ```
 
 This enables detecting stale configurations by comparing the file's version against the running manager's version.
+
+### `.github/CODEOWNERS`
+
+Enforces the two-file ownership model. All files default to the platform team; `project.tf` is owned by the project owner specified via the `-owner` flag.
+
+```
+*          @acme-org/platform-team
+project.tf @acme-org/my-team
+```
 
 ### `main.tf`
 

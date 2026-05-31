@@ -15,6 +15,8 @@ const version = "0.1.0"
 
 const terraformVersion = "1.15.5"
 
+const platformTeam = "@acme-org/platform-team"
+
 const gitignoreContent = `.terraform/
 *.tfstate
 *.tfstate.backup
@@ -22,7 +24,7 @@ const gitignoreContent = `.terraform/
 .terraform.lock.hcl
 `
 
-func Run(projectID string, outputDir string) error {
+func Run(projectID string, projectOwner string, outputDir string) error {
 	if _, err := exec.LookPath("tfenv"); err != nil {
 		return fmt.Errorf("tfenv is not installed or not in PATH")
 	}
@@ -42,6 +44,16 @@ func Run(projectID string, outputDir string) error {
 
 	if err := os.WriteFile(filepath.Join(dir, ".terraform-config-manager-version"), []byte(version+"\n"), 0644); err != nil {
 		return fmt.Errorf("writing .terraform-config-manager-version: %w", err)
+	}
+
+	githubDir := filepath.Join(dir, ".github")
+	if err := os.MkdirAll(githubDir, 0755); err != nil {
+		return fmt.Errorf("creating .github directory: %w", err)
+	}
+
+	codeowners := generateCodeowners(projectOwner)
+	if err := os.WriteFile(filepath.Join(githubDir, "CODEOWNERS"), codeowners, 0644); err != nil {
+		return fmt.Errorf("writing CODEOWNERS: %w", err)
 	}
 
 	mainTF := generateMain(projectID)
@@ -98,6 +110,10 @@ func generateProject(bucketName string) []byte {
 	return f.Bytes()
 }
 
+
+func generateCodeowners(projectOwner string) []byte {
+	return []byte(fmt.Sprintf("*          %s\nproject.tf %s\n", platformTeam, projectOwner))
+}
 
 func generateBucketName(projectID string) string {
 	b := make([]byte, 4)

@@ -19,16 +19,17 @@ func main() {
 	case "scaffold":
 		scaffoldCmd := flag.NewFlagSet("scaffold", flag.ExitOnError)
 		project := scaffoldCmd.String("project", "", "GCP project ID (required)")
+		owner := scaffoldCmd.String("owner", "", "GitHub team or user for project.tf ownership (required)")
 		outputDir := scaffoldCmd.String("output-dir", ".", "directory to create the project folder in")
 		scaffoldCmd.Parse(os.Args[2:])
 
-		if *project == "" {
-			fmt.Fprintln(os.Stderr, "Error: -project is required")
+		if *project == "" || *owner == "" {
+			fmt.Fprintln(os.Stderr, "Error: -project and -owner are required")
 			scaffoldCmd.Usage()
 			os.Exit(1)
 		}
 
-		if err := scaffold.Run(*project, *outputDir); err != nil {
+		if err := scaffold.Run(*project, *owner, *outputDir); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
