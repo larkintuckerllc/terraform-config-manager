@@ -16,7 +16,10 @@ Design decisions:
 
 - **Output directory per project.** The scaffolder creates a directory named after the GCP project ID (e.g., `my-project-id/`) inside the working directory. All generated files are placed there. This gives each project its own isolated Terraform root, with its own state, and makes it natural to manage multiple projects side by side.
 - **Local state only.** No remote backend configuration. This keeps the initial setup simple.
-- **Module-based resources.** Resources are defined in reusable Terraform modules hosted in a separate [Git repository](https://github.com/larkintuckerllc/terraform-modules). The generated `main.tf` references these modules pinned to a specific Git tag, keeping resource definitions decoupled from the scaffolder itself.
+- **Module-based resources.** Resources are defined in reusable Terraform modules hosted in a separate [Git repository](https://github.com/larkintuckerllc/terraform-modules), pinned to a specific Git tag.
+- **Two-file ownership model.** The generated Terraform configuration is split across two files to support distinct ownership via Git CODEOWNERS:
+  - `main.tf` — owned by the terraform-config-manager team. Contains the `terraform` block, `required_providers`, and `provider` configuration. Project owners cannot modify this file.
+  - `project.tf` — owned by the project owner. Contains only module calls. This is the only file project owners need to modify to manage their resources, and is the focus of future config validation.
 
 ## Prerequisites
 
@@ -51,7 +54,8 @@ my-project-id/
 ├── .gitignore
 ├── .terraform-config-manager-version
 ├── .terraform-version
-└── main.tf
+├── main.tf
+└── project.tf
 ```
 
 ### `.terraform-version`
@@ -86,7 +90,11 @@ This enables detecting stale configurations by comparing the file's version agai
 
 ### `main.tf`
 
-The Terraform configuration: provider setup and module references. Resources are not defined inline — instead, `main.tf` references modules from the [terraform-modules](https://github.com/larkintuckerllc/terraform-modules) repository, pinned to a specific Git tag. The contents of this file will evolve as the manager adds support for new modules. See the generated file for current details.
+Platform configuration owned by the terraform-config-manager team: `terraform` block, `required_providers`, and `provider` setup. Project owners should not modify this file. Contents will evolve as the manager changes platform settings.
+
+### `project.tf`
+
+Project-specific module calls owned by the project owner. This is the only file project owners modify to manage their resources. Module references point to the [terraform-modules](https://github.com/larkintuckerllc/terraform-modules) repository, pinned to a specific Git tag. Contents will evolve as the manager adds support for new modules. See the generated file for current details.
 
 ## Validating the Output
 

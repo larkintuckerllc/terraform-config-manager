@@ -16,7 +16,14 @@ The initial implementation targets a deliberately narrow use case to keep things
 - **State:** Local (no remote backend)
 - **Input:** GCP project ID
 
-This minimal scope lets us explore the `hclwrite` API without getting lost in infrastructure complexity. The specific resources and configuration details will evolve — see the generated `main.tf` for what's current.
+This minimal scope lets us explore the `hclwrite` API without getting lost in infrastructure complexity.
+
+The generated configuration is split into two files to support distinct ownership:
+
+- **`main.tf`** — owned by the terraform-config-manager team (platform config: Terraform version, providers)
+- **`project.tf`** — owned by the project owner (module calls for resources)
+
+This separation enables enforcement via Git CODEOWNERS and targeted validation of project-owner changes.
 
 ## Prerequisites
 

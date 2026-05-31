@@ -44,18 +44,23 @@ func Run(projectID string, outputDir string) error {
 		return fmt.Errorf("writing .terraform-config-manager-version: %w", err)
 	}
 
-	bucketName := generateBucketName(projectID)
-
-	mainTF := generateMain(projectID, bucketName)
+	mainTF := generateMain(projectID)
 	if err := os.WriteFile(filepath.Join(dir, "main.tf"), mainTF, 0644); err != nil {
 		return fmt.Errorf("writing main.tf: %w", err)
+	}
+
+	bucketName := generateBucketName(projectID)
+
+	projectTF := generateProject(bucketName)
+	if err := os.WriteFile(filepath.Join(dir, "project.tf"), projectTF, 0644); err != nil {
+		return fmt.Errorf("writing project.tf: %w", err)
 	}
 
 	fmt.Printf("Scaffolded Terraform configuration in %s\n", dir)
 	return nil
 }
 
-func generateMain(projectID, bucketName string) []byte {
+func generateMain(projectID string) []byte {
 	f := hclwrite.NewEmptyFile()
 	body := f.Body()
 
@@ -78,7 +83,12 @@ func generateMain(projectID, bucketName string) []byte {
 	providerBody := providerBlock.Body()
 	providerBody.SetAttributeValue("project", cty.StringVal(projectID))
 
-	body.AppendNewline()
+	return f.Bytes()
+}
+
+func generateProject(bucketName string) []byte {
+	f := hclwrite.NewEmptyFile()
+	body := f.Body()
 
 	moduleBlock := body.AppendNewBlock("module", []string{"my_bucket"})
 	moduleBody := moduleBlock.Body()
