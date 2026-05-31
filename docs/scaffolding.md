@@ -37,18 +37,11 @@ terraform-config-manager scaffold -project=<gcp-project-id> -owner=<github-team-
 
 ## Approach
 
-Using `hclwrite`, we programmatically construct HCL files from the input parameters. The `hclwrite` package operates at the token level, producing clean, properly formatted HCL that looks hand-written.
-
-Key `hclwrite` capabilities used:
-
-- `hclwrite.NewEmptyFile()` — create a new HCL file from scratch
-- `Body.AppendNewBlock()` — add `terraform`, `provider`, `resource`, and other block types
-- `Body.SetAttributeValue()` — set simple attributes (strings, numbers, bools)
-- `File.Bytes()` — emit the final formatted HCL output
+Using `hclwrite` from the HashiCorp `hcl/v2` library, we programmatically construct HCL files from the input parameters. The `hclwrite` package operates at the token level, producing clean, properly formatted HCL that looks hand-written. See the [hclwrite package documentation](https://pkg.go.dev/github.com/hashicorp/hcl/v2/hclwrite) for details.
 
 ## What Gets Generated
 
-Given project ID `my-project-id`, the scaffolder creates `my-project-id/` containing:
+Given project ID `my-project-id` and owner `@acme-org/my-team`, the scaffolder creates `my-project-id/` containing:
 
 ```
 my-project-id/
