@@ -6,12 +6,13 @@ import (
 	"os"
 
 	"terraform-config-manager/internal/scaffold"
+	"terraform-config-manager/internal/validate"
 )
 
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Fprintln(os.Stderr, "Usage: terraform-config-manager <command> [flags]")
-		fmt.Fprintln(os.Stderr, "Commands: scaffold")
+		fmt.Fprintln(os.Stderr, "Commands: scaffold, validate")
 		os.Exit(1)
 	}
 
@@ -30,6 +31,15 @@ func main() {
 		}
 
 		if err := scaffold.Run(*project, *owner, *outputDir); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	case "validate":
+		validateCmd := flag.NewFlagSet("validate", flag.ExitOnError)
+		dir := validateCmd.String("dir", ".", "path to the Terraform configuration directory")
+		validateCmd.Parse(os.Args[2:])
+
+		if err := validate.Run(*dir); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
