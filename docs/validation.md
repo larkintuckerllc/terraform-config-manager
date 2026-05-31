@@ -18,6 +18,10 @@ Validation focuses exclusively on `project.tf`. All other files in the Terraform
 
 `project.tf` must contain zero or more `module` blocks. Any other block types — `resource`, `data`, `provider`, `terraform`, `locals`, `variable`, `output` — are rejected.
 
+### Every module must have a source attribute
+
+Module blocks without a `source` attribute are rejected.
+
 ### Module sources must come from the approved repository
 
 Every module block must have a `source` attribute that references the approved Terraform modules repository:

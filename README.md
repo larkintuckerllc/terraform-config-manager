@@ -50,7 +50,8 @@ This separation is enforced via a generated `.github/CODEOWNERS` file and enable
 ├── cmd/
 │   └── terraform-config-manager/   # CLI entry point
 ├── internal/
-│   └── scaffold/                    # Scaffolding logic
+│   ├── scaffold/                    # Scaffolding logic
+│   └── validate/                    # Validation logic
 ├── docs/                            # Detailed documentation
 ├── go.mod                           # Go module definition
 └── README.md
@@ -71,6 +72,14 @@ Scaffold a new Terraform project:
 ```
 
 This creates a `my-project-id/` directory in the current folder with all the Terraform files ready to init and apply.
+
+## Testing Approach
+
+This project deliberately does not include unit tests. The scaffolder generates output with minimal logic — tests would just assert the generated HCL matches a hardcoded expected string, mirroring the implementation. Any change to the output would require updating both the code and the test in lockstep, with the test catching nothing a manual run wouldn't.
+
+The validator follows the same reasoning. Its rules are simple conditionals that map directly to the [validation doc](docs/validation.md). There is no complex logic where a change could accidentally break an unrelated rule.
+
+The right question before writing a test: *could someone accidentally break this code in a way the test would catch but running the tool wouldn't?* For both the scaffolder and validator, the answer is no. Validation is done by running the tool against real Terraform configurations.
 
 ## Documentation
 
