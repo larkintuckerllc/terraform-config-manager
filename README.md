@@ -48,6 +48,7 @@ This separation is enforced via a generated `.github/CODEOWNERS` file and enable
 ├── cmd/
 │   └── terraform-config-manager/   # CLI entry point
 ├── internal/
+│   ├── migrate/                     # Migration logic
 │   ├── scaffold/                    # Scaffolding logic
 │   └── validate/                    # Validation logic
 ├── docs/                            # Detailed documentation
