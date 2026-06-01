@@ -59,4 +59,5 @@ A migration from `0.1.0` to `0.2.0` that bumps the Google provider version const
 2. Find the `required_providers` block
 3. Update the `google` provider's `version` attribute from `~> 7.0` to `~> 8.0`
 4. Write the modified `main.tf`
-5. Update `.terraform-config-manager-version` to `0.2.0`
+
+The framework handles updating `.terraform-config-manager-version` automatically after each successful migration step.
