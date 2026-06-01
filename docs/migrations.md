@@ -8,6 +8,15 @@ When the platform team needs to update Terraform configurations — bumping prov
 
 Terraform configurations managed by the scaffolder will drift from the current platform standards over time. A project scaffolded at version `0.1.0` may need provider version bumps, new module versions, or structural changes introduced in later versions. Applying all changes at once is fragile — each change may depend on the state left by the previous one, and skipping intermediate steps risks breaking configs.
 
+## Versioning
+
+The terraform-config-manager version and the terraform-modules version are independent, similar to how Helm separates chart version from app version:
+
+- **terraform-config-manager version** (`0.1.0`, `0.2.0`, ...) — the version of the manager and the config structure it produces. Tracked in `.terraform-config-manager-version`.
+- **terraform-modules tags** (`v0.1.0`, `v0.2.0`, ...) — the version of the modules themselves, on their own release cadence.
+
+A manager migration may bump a module tag, but the version numbers are not aligned. For example, manager version `0.3.0` might reference module tag `v0.2.0` — the two evolve independently.
+
 ## Approach
 
 Each version of the terraform-config-manager defines a migration from the previous version. Migrations are applied incrementally, stepping through each version in order.
