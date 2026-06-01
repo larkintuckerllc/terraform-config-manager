@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"terraform-config-manager/internal/migrate"
 	"terraform-config-manager/internal/scaffold"
 	"terraform-config-manager/internal/validate"
 )
@@ -12,7 +13,7 @@ import (
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Fprintln(os.Stderr, "Usage: terraform-config-manager <command> [flags]")
-		fmt.Fprintln(os.Stderr, "Commands: scaffold, validate")
+		fmt.Fprintln(os.Stderr, "Commands: scaffold, validate, migrate")
 		os.Exit(1)
 	}
 
@@ -40,6 +41,16 @@ func main() {
 		validateCmd.Parse(os.Args[2:])
 
 		if err := validate.Run(*dir); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+	case "migrate":
+		migrateCmd := flag.NewFlagSet("migrate", flag.ExitOnError)
+		dir := migrateCmd.String("dir", ".", "path to the Terraform configuration directory")
+		targetVersion := migrateCmd.String("target-version", "", "version to migrate to (defaults to latest)")
+		migrateCmd.Parse(os.Args[2:])
+
+		if err := migrate.Run(*dir, *targetVersion); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
