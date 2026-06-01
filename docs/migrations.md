@@ -54,11 +54,8 @@ Each migration is defined in code as a function that takes the config directory 
 
 ## Example
 
-A migration from `0.1.0` to `0.2.0` that bumps the Google provider version constraint:
+The `0.1.0 → 0.2.0` migration bumps the module tag in `project.tf` from `v0.1.0` to `v0.2.0`, picking up a new configurable `location` variable added to the `my-bucket` module. Since the variable has a default value, no changes to module parameters are needed — only the tag is updated.
 
-1. Parse `main.tf`
-2. Find the `required_providers` block
-3. Update the `google` provider's `version` attribute from `~> 7.0` to `~> 8.0`
-4. Write the modified `main.tf`
+The migration function is a single call to the shared `UpdateModuleTag` utility in `internal/hclutil`, which parses `project.tf`, finds all module sources referencing the old tag, and replaces them with the new tag.
 
 The framework handles updating `.terraform-config-manager-version` automatically after each successful migration step.
