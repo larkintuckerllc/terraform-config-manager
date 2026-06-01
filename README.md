@@ -34,9 +34,7 @@ This separation is enforced via a generated `.github/CODEOWNERS` file and enable
 
 - **[Scaffold new configurations](docs/scaffolding.md)** — Generate a complete Terraform project from a GCP project ID and project owner: provider setup, module references to a [shared Terraform modules repo](https://github.com/larkintuckerllc/terraform-modules), CODEOWNERS, `.terraform-version`, `.terraform-config-manager-version`, and `.gitignore`.
 - **[Validate project configurations](docs/validation.md)** — Ensure `project.tf` contains only approved module references pinned to valid tags, suitable for CI review builds.
-- **Modify existing configurations** (planned) — Surgically add, update, or remove resources in existing `.tf` files while preserving formatting and comments.
-- **Compose modules** (planned) — Programmatically wire together module calls with the correct variable bindings.
-- **Bulk refactoring** (planned) — Rename resources, move blocks between files, update provider versions, or migrate patterns across many `.tf` files at once.
+- **[Migrate configurations](docs/migrations.md)** (planned) — Apply versioned migrations to bring configs up to date: provider bumps, Terraform version changes, module tag updates, and breaking module changes. Inspired by database migrations.
 
 ## Technology
 
