@@ -44,10 +44,19 @@ func UpdateModuleTag(dir, oldTag, newTag string) error {
 			continue
 		}
 		source := ExtractStringValue(sourceAttr)
-		updated := strings.Replace(source, "?ref="+oldTag, "?ref="+newTag, 1)
-		if updated != source {
-			block.Body().SetAttributeValue("source", cty.StringVal(updated))
+		if !strings.Contains(source, "?ref=") {
+			continue
 		}
+		if !strings.Contains(source, "?ref="+oldTag) {
+			labels := block.Labels()
+			name := "unknown"
+			if len(labels) > 0 {
+				name = labels[0]
+			}
+			return fmt.Errorf("module %q has unexpected tag in source: %s (expected %s)", name, source, oldTag)
+		}
+		updated := strings.Replace(source, "?ref="+oldTag, "?ref="+newTag, 1)
+		block.Body().SetAttributeValue("source", cty.StringVal(updated))
 	}
 
 	return os.WriteFile(path, f.Bytes(), 0644)
