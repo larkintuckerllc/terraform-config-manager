@@ -79,7 +79,7 @@ Excludes Terraform working files and state from version control.
 The version of `terraform-config-manager` that generated this configuration. Same format as `.terraform-version` — a single version string.
 
 ```
-0.1.0
+0.2.0
 ```
 
 This enables detecting stale configurations by comparing the file's version against the running manager's version.
