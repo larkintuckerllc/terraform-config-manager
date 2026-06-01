@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-const currentVersion = "0.1.0"
+const currentVersion = "0.2.0"
 
 type migration struct {
 	fromVersion string
@@ -16,8 +16,7 @@ type migration struct {
 }
 
 var migrations = []migration{
-	// To add a new migration:
-	// {fromVersion: "0.1.0", toVersion: "0.2.0", apply: migrate010to020},
+	{fromVersion: "0.1.0", toVersion: "0.2.0", apply: migrate010to020},
 }
 
 func Run(dir string, targetVersion string) error {

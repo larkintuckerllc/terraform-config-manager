@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/hashicorp/hcl/v2"
-	"github.com/hashicorp/hcl/v2/hclsyntax"
 	"github.com/hashicorp/hcl/v2/hclwrite"
+	"terraform-config-manager/internal/hclutil"
 )
 
 const approvedSourcePrefix = "git::https://github.com/larkintuckerllc/terraform-modules.git//"
@@ -44,7 +44,7 @@ func Run(dir string) error {
 			continue
 		}
 
-		source := extractStringValue(sourceAttr)
+		source := hclutil.ExtractStringValue(sourceAttr)
 		labels := block.Labels()
 		name := "unknown"
 		if len(labels) > 0 {
@@ -69,13 +69,3 @@ func Run(dir string) error {
 	return nil
 }
 
-func extractStringValue(attr *hclwrite.Attribute) string {
-	tokens := attr.Expr().BuildTokens(nil)
-	var sb strings.Builder
-	for _, token := range tokens {
-		if token.Type == hclsyntax.TokenQuotedLit {
-			sb.Write(token.Bytes)
-		}
-	}
-	return sb.String()
-}

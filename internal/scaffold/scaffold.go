@@ -11,7 +11,7 @@ import (
 	"github.com/zclconf/go-cty/cty"
 )
 
-const version = "0.1.0"
+const version = "0.2.0"
 
 const terraformVersion = "1.15.5"
 
@@ -104,7 +104,7 @@ func generateProject(bucketName string) []byte {
 
 	moduleBlock := body.AppendNewBlock("module", []string{"my_bucket"})
 	moduleBody := moduleBlock.Body()
-	moduleBody.SetAttributeValue("source", cty.StringVal("git::https://github.com/larkintuckerllc/terraform-modules.git//my-bucket?ref=v0.1.0"))
+	moduleBody.SetAttributeValue("source", cty.StringVal("git::https://github.com/larkintuckerllc/terraform-modules.git//my-bucket?ref=v0.2.0"))
 	moduleBody.SetAttributeValue("bucket_name", cty.StringVal(bucketName))
 
 	return f.Bytes()
