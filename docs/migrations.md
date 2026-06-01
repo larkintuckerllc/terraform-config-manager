@@ -28,7 +28,8 @@ Migrations can modify any platform-owned file:
 
 - **`main.tf`** — Terraform version constraints, provider version constraints, provider configuration
 - **`.terraform-version`** — pinned Terraform version for tfenv
-- **`.terraform-config-manager-version`** — updated after each migration step
+
+The framework automatically updates `.terraform-config-manager-version` after each successful migration step — individual migrations do not need to handle this.
 
 Migrations can also modify the project-owned file:
 
