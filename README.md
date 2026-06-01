@@ -78,7 +78,9 @@ This project deliberately does not include unit tests. The scaffolder generates 
 
 The validator follows the same reasoning. Its rules are simple conditionals that map directly to the [validation doc](docs/validation.md). There is no complex logic where a change could accidentally break an unrelated rule.
 
-The right question before writing a test: *could someone accidentally break this code in a way the test would catch but running the tool wouldn't?* For both the scaffolder and validator, the answer is no. Validation is done by running the tool against real Terraform configurations.
+Migrations are write-once — each migration is created, shipped, and never modified. There is no scenario where someone accidentally breaks a released migration without intentionally touching it.
+
+The right question before writing a test: *could someone accidentally break this code in a way the test would catch but running the tool wouldn't?* For the scaffolder, validator, and migrations, the answer is no. Validation is done by running the tool against real Terraform configurations.
 
 ## Documentation
 
